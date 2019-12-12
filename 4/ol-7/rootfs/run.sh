@@ -15,9 +15,7 @@ info "Executing user-defined init scripts"
 if [ -e /docker-init.d/  ]; then
     cd /docker-init.d/
     
-    for f in *.sh; do
-        bash "$f" -H || exit 1  # execute successfully or fail
-    done
+    run-parts --verbose --exit-on-error
 fi
 
 info "Starting redmine..."
