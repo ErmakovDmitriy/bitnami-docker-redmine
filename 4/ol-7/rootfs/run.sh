@@ -11,6 +11,15 @@ mkdir -p /opt/bitnami/redmine/tmp/pids
 chown ${USER}: -R /opt/bitnami/redmine/tmp
 chmod -R 1777 /opt/bitnami/redmine/tmp
 
+info "Executing user-defined init scripts"
+if [ -e /docker-init.d/  ]; then
+    cd /docker-init.d/
+    
+    for f in *.sh; do
+        bash "$f" -H || exit 1  # execute successfully or fail
+    done
+fi
+
 info "Starting redmine..."
 cd /opt/bitnami/redmine || exit 1
 exec gosu ${USER} bundle exec passenger start -e ${RAILS_ENV} --pid-file ${PID_FILE} --log-file ${LOG_FILE} -p 3000
