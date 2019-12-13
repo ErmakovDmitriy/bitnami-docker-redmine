@@ -15,7 +15,7 @@ info "Executing user-defined init scripts"
 if [ -e /docker-init.d/  ]; then
     cd /docker-init.d/
     
-    run-parts --verbose --exit-on-error ./
+    run-parts --verbose --exit-on-error --regex=".+" ./
 fi
 
 info "Starting redmine..."
